@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Essay Scorer</title>
+    <style>
+        body, h1, form, button, textarea {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .wrapper {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        h1 {
+            color: #64b5f6;
+        }
+
+        .essay-form {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .essay-form label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+            background-color: #333;
+            color: #e0e0e0;
+            border-radius: 4px;
+            height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #64b5f6;
+            color: #121212;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 18px;
+        }
+
+        .submit-btn:hover {
+            background-color: #2196f3;
+        }
+
+        .score-result {
+            margin-top: 20px;
+            background-color: #333;
+            padding: 10px;
+            border-left: 4px solid #64b5f6;
+            border-radius: 4px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #e0e0e0;
+        }
+
+        footer a {
+            color: #64b5f6;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <h1>Essay Scorer</h1>
+        </header>
+        <main>
+            <form id="essayForm" class="essay-form">
+                <label for="essayInput">Enter your essay below:</label>
+                <textarea id="essayInput" placeholder="Enter your essay here..."></textarea>
+                <button type="submit" class="submit-btn">Score Essay</button>
+            </form>
+            <div id="scoreResult" class="score-result">Score will appear here...</div>
+        </main>
+        <footer>
+            <a href="#">Terms and Conditions</a>
+            <a href="#">Help Center</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Contact Us</a>
+        </footer>
+    </div>
+    <script>
+        document.getElementById('essayForm').addEventListener('submit', function(e) {
+    e.preventDefault();  // Prevent the default form submission
+    const essayText = document.getElementById('essayInput').value;
+
+    fetch('/score', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({essay: essayText}),
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('scoreResult').innerText = `Predicted Score: ${data.score}`;
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+    </script>
+</body>
+</html>
